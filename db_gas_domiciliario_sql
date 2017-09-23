@@ -1,0 +1,2 @@
+// Tabla persona
+CREATE TABLE `db_gas_domiciliario`.`persona` ( `ci` INT NOT NULL AUTO_INCREMENT , `nombres` VARCHAR(50) NOT NULL , `apellido_paterno` VARCHAR(50) NOT NULL , `apellido_materno` VARCHAR(50) NOT NULL , `TC` TINYINT(1) NOT NULL , `cliente_codigo` VARCHAR(250) NULL , `TL` TINYINT(1) NOT NULL , `created_at` TIMESTAMP NULL , `updated_at` TIMESTAMP NULL , PRIMARY KEY (`ci`)) ENGINE = InnoDB;
