@@ -4,7 +4,7 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Formulario Registro Cliente</h2>
+            <h2>Editar Cliente: {{$cliente->nombres}} {{$cliente->apellido_paterno }} {{$cliente->apellido_materno}}</h2>
             <ol class="breadcrumb">
                 <li>
                     Instalación
@@ -13,7 +13,7 @@
                     <a href="{{ route('clientes') }}">Cliente</a>
                 </li>
                 <li class="active">
-                    <strong>Crear</strong>
+                    <strong>Editar</strong>
                 </li>
             </ol>
         </div>
@@ -63,12 +63,12 @@
                     <div class="ibox-content">
 
                         <div>
-                            {!! Form::open(['url' => 'cliente/store','method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-cliente', 'id' => 'frm-data-store-cliente']) !!}
+                            {!! Form::model($cliente,['route' => ['cliente/update',$cliente->ci],'method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-cliente', 'id' => 'frm-data-store-cliente']) !!}
 
                             <div class="form-group validate-cliente" id="div-ci">
                                 <label class="col-sm-2 control-label">Cédula de Identidad *</label>
                                 <div class="col-sm-10">
-                                    <input type="number" name="ci" class="form-control">
+                                    {!! Form::number('ci', $cliente->ci,['class'=>'form-control']) !!}
                                 </div>
                                 <p id="err-edt-ci" class="help-block err-div"></p>
                             </div>
@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Código cliente *</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="cliente_codigo" class="form-control">
+                                    {!! Form::text('cliente_codigo', $cliente->cliente_codigo,['class'=>'form-control']) !!}
                                 </div>
                             </div>
 
@@ -85,7 +85,7 @@
                             <div class="form-group validate-cliente" id="div-nombres">
                                 <label class="col-sm-2 control-label">Nombre completo *</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="nombres" class="form-control">
+                                    {!! Form::text('nombres', $cliente->nombres,['class'=>'form-control']) !!}
                                 </div>
                                 <p id="err-edt-nombres" class="help-block err-div"></p>
                             </div>
@@ -94,7 +94,7 @@
                             <div class="form-group validate-cliente" id="div-apellido_paterno">
                                 <label class="col-sm-2 control-label">Apellido paterno *</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="apellido_paterno" class="form-control">
+                                    {!! Form::text('apellido_paterno', $cliente->apellido_paterno,['class'=>'form-control']) !!}
                                 </div>
                                 <p id="err-edt-apellido_paterno" class="help-block err-div"></p>
                             </div>
@@ -103,7 +103,7 @@
                             <div class="form-group validate-cliente" id="div-apellido_materno">
                                 <label class="col-sm-2 control-label">Apellido materno *</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="apellido_materno" class="form-control">
+                                    {!! Form::text('apellido_materno', $cliente->apellido_materno,['class'=>'form-control']) !!}
                                 </div>
                                 <p id="err-edt-apellido_materno" class="help-block err-div"></p>
                             </div>
@@ -114,7 +114,7 @@
                                 <div class="col-sm-10">
                                     <div class="input-group m-b">
                                         <span class="input-group-addon"><i class="fa fa-at" aria-hidden="true"></i></span>
-                                        <input type="email" name="email" class="form-control">
+                                        {!! Form::email('email', $cliente->email,['class'=>'form-control']) !!}
                                     </div>
                                     </span>
                                 </div>
@@ -126,7 +126,7 @@
                                 <div class="col-sm-10">
                                     <div class="input-group m-b">
                                         <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                                        <input type="number" name="telefono_fijo" class="form-control">
+                                        {!! Form::number('telefono_fijo', $cliente->telefono_fijo,['class'=>'form-control']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
                                 <div class="col-sm-10">
                                     <div class="input-group m-b">
                                         <span class="input-group-addon"><i class="fa fa-mobile" aria-hidden="true"></i></span>
-                                        <input type="number" name="telefono_celular" class="form-control">
+                                        {!! Form::number('telefono_celular', $cliente->telefono_celular,['class'=>'form-control']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                                     <a href="{{route('clientes')}}" class="btn btn-default">Cancelar</a>
                                 </div>
                                 <div class="col-sm-3 col-md-3">
-                                    <button class="btn btn-primary" type="submit"  id="btn-crear-cliente">Guardar cambios</button>
+                                    <button class="btn btn-primary" type="submit" >Guardar cambios</button>
                                 </div>
                             </div>
                             {!! Form::close() !!}
@@ -161,46 +161,123 @@
             </div>
         </div>
     </div>
-@push('head')
-    <link href="{{ asset('site/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
-@endpush
-@push('scripts')
-    <!-- Steps -->
-    <script src="{{ asset('site/js/plugins/steps/jquery.steps.min.js') }}"></script>
-    <!-- Jquery Validate -->
-    <script src="{{ asset('site/js/plugins/validate/jquery.validate.min.js') }}"></script>
-    <script>
-        $(document).ready(function () {
+    @push('head')
+        <link href="{{ asset('site/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
+    @endpush
+    @push('scripts')
+        <!-- Steps -->
+        <script src="{{ asset('site/js/plugins/steps/jquery.steps.min.js') }}"></script>
+        <!-- Jquery Validate -->
+        <script src="{{ asset('site/js/plugins/validate/jquery.validate.min.js') }}"></script>
+        <script>
+            $(document).ready(function () {
+                $("#wizard").steps();
+                $("#form").steps({
+                    bodyTag: "fieldset",
+                    onStepChanging: function (event, currentIndex, newIndex)
+                    {
+                        // Always allow going backward even if the current step contains invalid fields!
+                        if (currentIndex > newIndex)
+                        {
+                            return true;
+                        }
 
-            $('#verborgen_file').hide();
-            $('#pf_foto').css('background-image', 'url("'+'{{ asset('site/img/profile_big.jpg') }}'+'")');
-            $('#pf_foto').on('click', function () {
-                $('#verborgen_file').click();
+                        // Forbid suppressing "Warning" step if the user is to young
+                        if (newIndex === 3 && Number($("#age").val()) < 18)
+                        {
+                            return false;
+                        }
+
+                        var form = $(this);
+
+                        // Clean up if user went backward before
+                        if (currentIndex < newIndex)
+                        {
+                            // To remove error styles
+                            $(".body:eq(" + newIndex + ") label.error", form).remove();
+                            $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                        }
+
+                        // Disable validation on fields that are disabled or hidden.
+                        form.validate().settings.ignore = ":disabled,:hidden";
+
+                        // Start validation; Prevent going forward if false
+                        return form.valid();
+                    },
+                    onStepChanged: function (event, currentIndex, priorIndex)
+                    {
+                        // Suppress (skip) "Warning" step if the user is old enough.
+                        if (currentIndex === 2 && Number($("#age").val()) >= 18)
+                        {
+                            $(this).steps("next");
+                        }
+
+                        // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+                        if (currentIndex === 2 && priorIndex === 3)
+                        {
+                            $(this).steps("previous");
+                        }
+                    },
+                    onFinishing: function (event, currentIndex)
+                    {
+                        var form = $(this);
+
+                        // Disable validation on fields that are disabled.
+                        // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+                        form.validate().settings.ignore = ":disabled";
+
+                        // Start validation; Prevent form submission if false
+                        return form.valid();
+                    },
+                    onFinished: function (event, currentIndex)
+                    {
+                        var form = $(this);
+
+                        // Submit form input
+                        form.submit();
+                    }
+                }).validate({
+                    errorPlacement: function (error, element)
+                    {
+                        element.before(error);
+                    },
+                    rules: {
+                        confirm: {
+                            equalTo: "#password"
+                        }
+                    }
+                });
+                ////////////////////////////////////////////
+
+                $('#verborgen_file').hide();
+                $('#pf_foto').css('background-image', 'url("'+'{{ asset('site/img/profile_big.jpg') }}'+'")');
+                $('#pf_foto').on('click', function () {
+                    $('#verborgen_file').click();
+                });
+                $('#verborgen_file').change(function () {
+                    var file = this.files[0];
+                    var reader = new FileReader();
+                    reader.onloadend = function () {
+                        $('#pf_foto').css('background-image', 'url("' + reader.result + '")');
+                    }
+                    if (file) {
+                        reader.readAsDataURL(file);
+                    } else {
+                        $('#pf_foto').css('background-image', 'url("")');
+                    }
+
+                });
+                $("[name='frm-data-img']").submit(function(e){
+                    var file=$("#verborgen_file").val();
+                    if(file==''){
+                        alert("Porfavor seleccione una imagen");
+                        e.preventDefault();
+                    }else{
+
+                    }
+                });
             });
-            $('#verborgen_file').change(function () {
-                var file = this.files[0];
-                var reader = new FileReader();
-                reader.onloadend = function () {
-                    $('#pf_foto').css('background-image', 'url("' + reader.result + '")');
-                }
-                if (file) {
-                    reader.readAsDataURL(file);
-                } else {
-                    $('#pf_foto').css('background-image', 'url("")');
-                }
 
-            });
-            $("[name='frm-data-img']").submit(function(e){
-                var file=$("#verborgen_file").val();
-                if(file==''){
-                    alert("Porfavor seleccione una imagen");
-                    e.preventDefault();
-                }else{
-
-                }
-            });
-        });
-
-    </script>
-@endpush
+        </script>
+    @endpush
 @endsection

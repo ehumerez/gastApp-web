@@ -8,7 +8,8 @@ class EstadoInstalacion extends Model
 {
     protected $table = 'estado_instalacion';
 
-    public function instalacionEstadoInstalacion() {
-        return $this->hasOne('App\InstalacionEstadoInstalacion','id_estado_instalacion');
+    public function instalacion() {
+        return $this->hasMany('App\Instalacion','id_estado_instalacion');
     }
+
 }

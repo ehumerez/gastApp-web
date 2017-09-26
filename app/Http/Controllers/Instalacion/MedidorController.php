@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Instalacion;
 
+use App\Http\Requests\MedidorFormRequest;
 use App\Medidor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,10 +22,9 @@ class MedidorController extends Controller
 		return view('instalacion/medidor/created');
 	}
 
-	public function store(Request $request) {
+	public function store(MedidorFormRequest $request) {
 	    //dd($request);
 		Medidor::crearMedidor($request);
-		//return response()->json(['respuesta' => 'ok','message' => 'El medidor se registró exitósamente']);
         return redirect('medidores');
 	}
 
@@ -37,5 +37,19 @@ class MedidorController extends Controller
         Medidor::actualizar($request,$id);
         return redirect('medidores');
     }
+
+    /*public function setConsumo(Request $request,$idMedidor) {
+
+        return response()->json(['respuesta' => 'ok','message' => $request['idMedidor'],'id'=>$idMedidor]);
+    }*/
+
+    public function setConsumo(Request $request,$idMedidor) {
+
+        $medidor = Medidor::find($idMedidor);
+        $medidor->consumo_m3 = $request['consumo_m3'];
+        $medidor->update();
+        return response()->json(['respuesta' => 'ok','redirect_url' => route('medidor/index'),'consumo' => $idMedidor]);
+    }
+
 
 }

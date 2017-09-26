@@ -3,15 +3,27 @@
 namespace App\Http\Controllers\Instalacion;
 
 use App\DomicilioCliente;
+use App\Http\Requests\DomicilioFormRequest;
+use App\Instalacion;
+use App\Municipio;
 use App\Persona;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class DomicilioClienteController extends Controller
 {
     public function index($idCliente) {
         //dd(DomicilioCliente::where('ci_cliente',$idCliente)->get());
-        return view('instalacion/domicilios/index',['domicilios' => DomicilioCliente::where('ci_cliente',$idCliente)->get(), 'cliente' => Persona::find($idCliente)]);
+        //dd(DomicilioCliente::all());
+        //$domicilios = count(DomicilioCliente::where('ci_cliente',$idCliente)->get()) == 0?null:DomicilioCliente::where('ci_cliente',$idCliente)->get();
+        $domicilios = DB::table('persona as c')
+            ->join('domicilio_cliente as dc','dc.ci_cliente','=','c.ci')
+            ->where('c.TC',1)
+            ->where('dc.ci_cliente',$idCliente)
+            ->get();
+        //dd($domicilios);
+        return view('instalacion/domicilios/index',['domicilios' => $domicilios, 'cliente' => Persona::find($idCliente)]);
     }
 
     public function crear($idCliente) {
@@ -23,11 +35,12 @@ class DomicilioClienteController extends Controller
         $data->medidores = $medidores;*/
         $data  = new \stdClass;
         $data = Persona::find($idCliente);
-        //dd($data);
-        return view('instalacion/domicilios/create',compact('data'));
+        $municipios = Municipio::all();
+        //dd($municipios);
+        return view('instalacion/domicilios/create',compact('data','municipios'));
     }
 
-    public function store(Request $request,$id) {
+    public function store(DomicilioFormRequest $request,$id) {
         $request['ci_cliente'] = $id;
         DomicilioCliente::create($request->all());
         return redirect()->route('domicilios',['id' => $id]);
@@ -41,5 +54,20 @@ class DomicilioClienteController extends Controller
         //$d::find($request['idD']);
         //dd($request);
         return response()->json(['respuesta' => 'ok', 'lat' => $d->lat ,'lng' => $d->lng]);
+    }
+
+    public function destroy($ci,$id) {
+        $domicilio = DomicilioCliente::find($id);
+        $domicilio->delete();
+        return redirect()->route('domicilios',['id' => $ci]);
+    }
+
+    public function getDomicilios($ci) {
+        $instalaciones = Instalacion::select('id_domicilio_cliente')->get();
+        $dom = DB::table('domicilio_cliente')
+            ->where('ci_cliente',$ci)
+            ->whereNotIn('id', $instalaciones)
+            ->get();
+        return response()->json(['respuesta'=>'ok','ci' => $ci,'domicilios' => $dom]);
     }
 }

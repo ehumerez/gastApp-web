@@ -6,7 +6,7 @@
                             <img alt="image" class="img-circle" src="{{ asset('site/img/profile_small_Eliot Humerez.jpg') }}" />
                              </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Eliot Humerez</strong>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ \Illuminate\Support\Facades\Auth::user()->name }}</strong>
                              </span> <span class="text-muted text-xs block">CEO and Funder Humcorp <b class="caret"></b></span> </span> </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="profile.html">Profile</a></li>

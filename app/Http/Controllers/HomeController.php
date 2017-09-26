@@ -26,7 +26,7 @@ class HomeController extends Controller
         return view('home1');
     }
 
-    public function login1() {
+    public function login() {
         return view('auth/login_two_columns');
     }
 }

@@ -7,10 +7,13 @@
             <h2>Formulario Registro de Domicilio para el cliente: {{ $data->nombres }} {{ $data->apellido_paterno }} {{ $data->apellido_materno }}</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="index-2.html">Instalación</a>
+                    Instalaciones
                 </li>
                 <li>
-                    <a>Domicilio</a>
+                    <a href="{{ url('clientes') }}">Cliente</a>
+                </li>
+                <li>
+                    <a href="{{ route('domicilios',['id' => $data->ci]) }}">Domicilio</a>
                 </li>
                 <li class="active">
                     <strong>Crear</strong>
@@ -37,6 +40,15 @@
                             </a>
                         </div>
                     </div>
+                    @if(count($errors)>0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="ibox-content">
 
                         <div>
@@ -52,17 +64,37 @@
                             <div class="form-group validate-cliente" id="div-uv">
                                 <div class="row">
                                     <div class="hr-line-dashed"></div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-5">
+                                        <label class="control-label">Municipio:</label>
+                                        <select name="id_municipio" class="form-control">
+                                            @foreach($municipios as $municipio)
+                                                <option value="{{$municipio->id }}">{{ $municipio->municipio_nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                        <p id="err-edt-manzana" class="help-block err-div"></p>
+                                    </div>
+                                    <div class="col-sm-5">
                                         <label class="control-label">UV:</label>
                                         <input type="text" name="uv" class="form-control">
                                         <p id="err-edt-uv" class="help-block err-div"></p>
                                     </div>
-                                    <div class="col-sm-4">
+                                </div>
+                            </div>
+                            <div class="form-group validate-cliente" id="div-uv">
+                                <div class="row">
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-3">
                                         <label class="control-label">Manzana:</label>
                                         <input type="number" name="manzana" step="any" class="form-control">
                                         <p id="err-edt-manzana" class="help-block err-div"></p>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Lote:</label>
+                                        <input type="text" name="lote" class="form-control">
+                                    </div>
+                                    <div class="col-sm-3">
                                         <label class="control-label">Número de domicilio:</label>
                                         <input type="text" name="nro" class="form-control">
                                     </div>
@@ -98,10 +130,10 @@
                                 <div class="col-sm-2 col-md-2"></div>
                                 <div class="col-sm-2 col-md-2"></div>
                                 <div class="col-sm-2 col-md-2">
-                                    <button class="btn btn-primary" type="submit"  id="btn-crear-domicilio">Guardar cambios</button>
+                                    <a href="{{ route('domicilios',['id' => $data->ci]) }}" class="btn btn-default">Cancelar</a>
                                 </div>
                                 <div class="col-sm-2 col-md-2">
-                                    <button class="btn btn-default" type="submit" id="btn-crear-cliente-cancelar">Cancelar</button>
+                                    <button class="btn btn-primary" type="submit"  id="btn-crear-domicilio">Guardar cambios</button>
                                 </div>
                             </div>
 
@@ -127,84 +159,6 @@
         <script src="{{ asset('site/js/plugins/validate/jquery.validate.min.js') }}"></script>
         <script>
             $(document).ready(function () {
-                $("#wizard").steps();
-                $("#form").steps({
-                    bodyTag: "fieldset",
-                    onStepChanging: function (event, currentIndex, newIndex)
-                    {
-                        // Always allow going backward even if the current step contains invalid fields!
-                        if (currentIndex > newIndex)
-                        {
-                            return true;
-                        }
-
-                        // Forbid suppressing "Warning" step if the user is to young
-                        if (newIndex === 3 && Number($("#age").val()) < 18)
-                        {
-                            return false;
-                        }
-
-                        var form = $(this);
-
-                        // Clean up if user went backward before
-                        if (currentIndex < newIndex)
-                        {
-                            // To remove error styles
-                            $(".body:eq(" + newIndex + ") label.error", form).remove();
-                            $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
-                        }
-
-                        // Disable validation on fields that are disabled or hidden.
-                        form.validate().settings.ignore = ":disabled,:hidden";
-
-                        // Start validation; Prevent going forward if false
-                        return form.valid();
-                    },
-                    onStepChanged: function (event, currentIndex, priorIndex)
-                    {
-                        // Suppress (skip) "Warning" step if the user is old enough.
-                        if (currentIndex === 2 && Number($("#age").val()) >= 18)
-                        {
-                            $(this).steps("next");
-                        }
-
-                        // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
-                        if (currentIndex === 2 && priorIndex === 3)
-                        {
-                            $(this).steps("previous");
-                        }
-                    },
-                    onFinishing: function (event, currentIndex)
-                    {
-                        var form = $(this);
-
-                        // Disable validation on fields that are disabled.
-                        // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
-                        form.validate().settings.ignore = ":disabled";
-
-                        // Start validation; Prevent form submission if false
-                        return form.valid();
-                    },
-                    onFinished: function (event, currentIndex)
-                    {
-                        var form = $(this);
-
-                        // Submit form input
-                        form.submit();
-                    }
-                }).validate({
-                    errorPlacement: function (error, element)
-                    {
-                        element.before(error);
-                    },
-                    rules: {
-                        confirm: {
-                            equalTo: "#password"
-                        }
-                    }
-                });
-                ////////////////////////////////////////////
-
                 $('#verborgen_file').hide();
                 $('#pf_foto').css('background-image', 'url("'+'{{ asset('site/img/profile_big.jpg') }}'+'")');
                 $('#pf_foto').on('click', function () {
@@ -242,7 +196,7 @@
      https://developers.google.com/maps/documentation/javascript/tutorial#api_key
      After your sign up replace the key in the URL below..
     -->
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>
+        {{--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbuAVJ5XCTib6-mkZSOLtY9rnGenBHlJE"></script>--}}
 
         <script type="text/javascript">
             google.maps.event.addDomListener(window,'load',init);
@@ -253,8 +207,6 @@
             var markers = [];
             function init() {
                 var latLng = {lat:-17.7349020,lng: -63.181255};
-                // Options for Google map
-                // More info see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
                 var mapOptions1 = {
                     zoom: 12,
                     center: new google.maps.LatLng(latLng),
@@ -270,13 +222,8 @@
 
                 // This event listener calls addMarker() when the map is clicked.
                 google.maps.event.addListener(map1, 'click', function(event) {
-                    //var a = event.latLng.toJSON();
-                    //console.log("Latitud: "+a.lat+" Longitud: "+a.lng);
                     addMarker(event.latLng, map1);
                 });
-
-                // Add a marker at the center of the map.
-                //addMarker(latLng, map1);
             }
             // Adds a marker to the map.
             function addMarker(location, map) {
@@ -321,4 +268,4 @@
             }
         </script>
     @endpush
-@endsection/
+@endsection

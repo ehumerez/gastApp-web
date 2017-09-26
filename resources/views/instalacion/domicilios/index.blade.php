@@ -7,7 +7,10 @@
             <h2>Lista de domicilios del cliente {{ $cliente->nombres }} {{ $cliente->apellido_paterno }} {{ $cliente->apellido_materno }}</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="index-2.html">Instalaciones</a>
+                    Instalaciones
+                </li>
+                <li>
+                    <a href="{{ url('clientes') }}">Clientes</a>
                 </li>
                 <li class="active">
                     <strong>Domicilios</strong>
@@ -58,8 +61,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @if(count($domicilios)>0)
                                 @foreach($domicilios as $direccion)
-                                    @if($direccion->cliente != '')
+                                    {{--@if($direccion->cliente != '')--}}
                                     <tr class="gradeX">
                                         <td>{{ $direccion->id }}</td>
                                         <td>{{ $direccion->direccion }}</td>
@@ -68,7 +72,7 @@
                                         <td>{{ $direccion->lote }}</td>
                                         <td>{{ $direccion->nro }}</td>
                                         <td class="center">
-                                            <button class="btn btn-danger">
+                                            <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
                                             <button class="btn btn-info">
@@ -80,8 +84,9 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    @endif
+                                    {{--@endif--}}
                                 @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -89,6 +94,7 @@
                 </div>
             </div>
             @include('instalacion.instalacion.mapa_modal')
+            @include('instalacion.domicilios.delete_modal')
         </div>
     </div>
 
@@ -99,13 +105,8 @@
         <script src="{{ asset('site/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
         <script src="{{ asset('site/js/plugins/dataTables/datatables.min.js') }}"></script>
-
-        <!-- Custom and plugin javascript -->
-        <script src="{{ asset('site/js/inspinia.js') }}"></script>
-        <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
-        <!-- Page-Level Scripts -->
         <script>
-            $(document).ready(function(){
+            $(document).ready(function () {
                 $('.dataTables-example').DataTable({
                     "language": {
                         "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
@@ -133,10 +134,12 @@
                     ]
 
                 });
-
             });
 
         </script>
+        <!-- Custom and plugin javascript -->
+        <script src="{{ asset('site/js/inspinia.js') }}"></script>
+        <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
         <script>
             $(function () {
                 @if(Session::has('STORE_CLIENTE') && Session::get('STORE_CLIENTE') == '1')
@@ -152,7 +155,7 @@
      https://developers.google.com/maps/documentation/javascript/tutorial#api_key
      After your sign up replace the key in the URL below..
     -->
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>
+        {{--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>--}}
         <script type="text/javascript">
             //google.maps.event.addDomListener(window,'load',init);
             function init(lat1,lng1,direccion) {

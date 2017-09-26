@@ -4,13 +4,13 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Solicitudes de instalación</h2>
+            <h2>Recorridos</h2>
             <ol class="breadcrumb">
                 <li>
-                    Instalación
+                    Cobranza
                 </li>
                 <li class="active">
-                    <strong>Solicitudes</strong>
+                    <strong>Recorridos</strong>
                 </li>
             </ol>
         </div>
@@ -23,7 +23,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <a href="{{ url('instalacion/crear') }}"><button class="btn btn-success"> Crear solicitud</button></a>
+                        <a href="{{ url('recorrido/crear') }}"><button class="btn btn-success"> Crear recorrido</button></a>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -38,27 +38,50 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Fecha de Registro</th>
-                                    <th>Estado</th>
-                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Tiempo estimado</th>
+                                    <th>Lecturador asignado</th>
+                                    <th>Fecha</th>
                                     <th>Funciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($instalaciones as $instalacion)
+                                @foreach($recorridos as $recorrido)
                                         <tr class="gradeX">
-                                            <td>{{ $instalacion->id }}</td>
-                                            <td> {{ $instalacion->created_at }}</td>
-                                            <td>{{ $instalacion->estadoInstalacion->estado_instalacion_descripcion }} </td>
-                                            <td>{{ $instalacion->categoriaInstalacion->categoria_instalacion_descripcion }}</td>
+                                            <td>{{ $recorrido->id }}</td>
+                                            <td> {{ $recorrido->created_at }}</td>
+                                            <td>{{ $recorrido->recorrido_descripcion }}</td>
+                                            <td>{{ $recorrido->tiempo_estimado }}</td>
+                                        @if($recorrido->ci_lecturador != null)
+                                            <td>CI: {{ $recorrido->lecturador->ci }} - {{ $recorrido->lecturador->nombres }} {{ $recorrido->lecturador->apellido_paterno }} {{ $recorrido->lecturador->apellido_materno }}</td>
+                                        @else
+                                            <td>Recorrido sin asignar </td>
+                                        @endif
+                                            <td>{{ $recorrido->fecha }}</td>
                                             <td class="center">
-                                                <a href="{{ route('instalacion/mostrar',['id' => $instalacion->id]) }}"><button class="btn btn-danger">
+                                                <a href=""><button class="btn btn-warning">
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </button></a>
-                                                <a href="{{ route('instalacion/editar',['id' => $instalacion->id]) }}">
+                                                <a href="">
                                                     <button class="btn btn-default">
                                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     </button>
                                                 </a>
+                                        @if($recorrido->ci_lecturador == null)
+                                                <a href="{{ route('recorrido/asignar-lecturador',['ic'=> $recorrido->id]) }}">
+                                                    <button class="btn btn-default">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                        Asignar Lecturador
+                                                    </button>
+                                                </a>
+                                        @else
+                                                <a href="{{ route('recorrido/asignar-lecturador',['ic'=> $recorrido->id]) }}">
+                                                    <button class="btn btn-info">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                        Eliminar asignación
+                                                    </button>
+                                                </a>
+                                        @endif
                                             </td>
                                         </tr>
                                 @endforeach
@@ -117,9 +140,9 @@
         <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
         <script>
             $(function () {
-                @if(Session::has('STORE_CLIENTE') && Session::get('STORE_CLIENTE') == '1')
-                showToast("Cliente","Registro del cliente exitoso","success");
-                {{ Session::forget('STORE_CLIENTE') }}
+                @if(Session::has('STORE_RECORRIDO') && Session::get('STORE_RECORRIDO') == '1')
+                showToast("Recorrido","Registro del recorrido exitoso","success");
+                {{ Session::forget('STORE_RECORRIDO') }}
                 @endif
             });
         </script>

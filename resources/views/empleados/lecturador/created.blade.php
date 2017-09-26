@@ -4,13 +4,13 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Formulario Registro Cliente</h2>
+            <h2>Formulario Registro Lecturador</h2>
             <ol class="breadcrumb">
                 <li>
                     Instalación
                 </li>
                 <li>
-                    <a href="{{ route('clientes') }}">Cliente</a>
+                    <a href="{{ route('lecturadores') }}">Lecturador</a>
                 </li>
                 <li class="active">
                     <strong>Crear</strong>
@@ -63,9 +63,9 @@
                     <div class="ibox-content">
 
                         <div>
-                            {!! Form::open(['url' => 'cliente/store','method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-cliente', 'id' => 'frm-data-store-cliente']) !!}
+                            {!! Form::open(['url' => 'lecturador/store','method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-lecturador', 'id' => 'frm-data-store-lecturador']) !!}
 
-                            <div class="form-group validate-cliente" id="div-ci">
+                            <div class="form-group validate-lecturador" id="div-ci">
                                 <label class="col-sm-2 control-label">Cédula de Identidad *</label>
                                 <div class="col-sm-10">
                                     <input type="number" name="ci" class="form-control">
@@ -74,15 +74,7 @@
                             </div>
 
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Código cliente *</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="cliente_codigo" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group validate-cliente" id="div-nombres">
+                            <div class="form-group validate-lecturador" id="div-nombres">
                                 <label class="col-sm-2 control-label">Nombre completo *</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="nombres" class="form-control">
@@ -91,7 +83,7 @@
                             </div>
 
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group validate-cliente" id="div-apellido_paterno">
+                            <div class="form-group validate-lecturador" id="div-apellido_paterno">
                                 <label class="col-sm-2 control-label">Apellido paterno *</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="apellido_paterno" class="form-control">
@@ -100,7 +92,7 @@
                             </div>
 
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group validate-cliente" id="div-apellido_materno">
+                            <div class="form-group validate-lecturador" id="div-apellido_materno">
                                 <label class="col-sm-2 control-label">Apellido materno *</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="apellido_materno" class="form-control">
@@ -145,10 +137,10 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-3 col-md-3">
-                                    <a href="{{route('clientes')}}" class="btn btn-default">Cancelar</a>
+                                    <a href="{{route('lecturadores')}}" class="btn btn-default">Cancelar</a>
                                 </div>
                                 <div class="col-sm-3 col-md-3">
-                                    <button class="btn btn-primary" type="submit"  id="btn-crear-cliente">Guardar cambios</button>
+                                    <button class="btn btn-primary" type="submit"  id="btn-crear-lecturador">Guardar cambios</button>
                                 </div>
                             </div>
                             {!! Form::close() !!}
@@ -171,7 +163,6 @@
     <script src="{{ asset('site/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-
             $('#verborgen_file').hide();
             $('#pf_foto').css('background-image', 'url("'+'{{ asset('site/img/profile_big.jpg') }}'+'")');
             $('#pf_foto').on('click', function () {

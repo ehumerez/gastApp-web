@@ -4,13 +4,13 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Clientes</h2>
+            <h2>Técnicos</h2>
             <ol class="breadcrumb">
                 <li>
-                    Instalaciones
+                    Empleados
                 </li>
                 <li class="active">
-                    <strong>Clientes</strong>
+                    <strong>Técnicos</strong>
                 </li>
             </ol>
         </div>
@@ -23,22 +23,10 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <a href="{{ url('cliente/crear') }}"><button class="btn btn-success"> Crear cliente</button></a>
+                        <a href="{{ url('tecnico/crear') }}"><button class="btn btn-success"> Crear tecnico</button></a>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="#">Config option 1</a>
-                                </li>
-                                <li><a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
                             </a>
                         </div>
                     </div>
@@ -49,7 +37,6 @@
                                 <thead>
                                 <tr>
                                     <th>Ci</th>
-                                    <th>Código cliente</th>
                                     <th>Nombre completo</th>
                                     <th>Email</th>
                                     <th>Teléfono fijo</th>
@@ -59,27 +46,26 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($clientes as $cliente)
+                                @foreach($tecnicos as $tecnico)
                                     <tr class="gradeX">
-                                        <td>{{ $cliente->ci }}</td>
-                                        <td>{{ $cliente->cliente_codigo }}</td>
-                                        <td>{{ $cliente->nombres }} {{ $cliente->apellido_paterno }} {{ $cliente->apellido_materno }} </td>
-                                        <td>{{ $cliente->email }}</td>
-                                        <td>{{ $cliente->telefono_fijo }}</td>
-                                        <td>{{ $cliente->telefono_celular }}</td>
-                                        <td>{{ $cliente->created_at }}</td>
+                                        <td>{{ $tecnico->ci }}</td>
+                                        <td>{{ $tecnico->nombres }} {{ $tecnico->apellido_paterno }} {{ $tecnico->apellido_materno }} </td>
+                                        <td>{{ $tecnico->email }}</td>
+                                        <td>{{ $tecnico->telefono_fijo }}</td>
+                                        <td>{{ $tecnico->telefono_celular }}</td>
+                                        <td>{{ $tecnico->created_at }}</td>
                                         <td class="center">
                                             <button class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
-                                            <a href="{{ route('cliente/editar',['ci' => $cliente->ci ]) }}">
+                                            <a href="{{ route('tecnico/editar',['ci' => $tecnico->ci ]) }}">
                                                 <button class="btn btn-default">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </button>
                                             </a>
-                                            <a href="{{ url('domicilios') }}/{{ $cliente->ci }}">
+                                            <a href="{{ url('domicilios') }}/{{ $tecnico->ci }}">
                                                 <button class="btn btn-default">
-                                                    Ver domicilios
+                                                    Ver reclamos
                                                 </button>
                                             </a>
                                         </td>
@@ -102,38 +88,6 @@
         <script src="{{ asset('site/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
         <script src="{{ asset('site/js/plugins/dataTables/datatables.min.js') }}"></script>
-        <script>
-            $(document).ready(function () {
-                $('.dataTables-example').DataTable({
-                    "language": {
-                        "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
-                    },
-                    pageLength: 25,
-                    responsive: true,
-                    ordering: true,
-                    dom: '<"html5buttons"B>lTfgitp',
-                    buttons: [
-                        { extend: 'copy'},
-                        {extend: 'csv'},
-                        {extend: 'excel', title: 'ExampleFile'},
-                        {extend: 'pdf', title: 'ExampleFile'},
-
-                        {extend: 'print',
-                            customize: function (win){
-                                $(win.document.body).addClass('white-bg');
-                                $(win.document.body).css('font-size', '10px');
-
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
-                            }
-                        }
-                    ]
-
-                });
-            });
-
-        </script>
 
         <!-- Custom and plugin javascript -->
         <script src="{{ asset('site/js/inspinia.js') }}"></script>
@@ -141,9 +95,9 @@
 
         <script>
             $(function () {
-                @if(Session::has('STORE_CLIENTE') && Session::get('STORE_CLIENTE') == '1')
-                showToast("Cliente","Registro del cliente exitoso","success");
-                {{ Session::forget('STORE_CLIENTE') }}
+                @if(Session::has('STORE_TECNICO') && Session::get('STORE_TECNICO') == '1')
+                showToast("Técnico","Registro del ténico exitoso","success");
+                {{ Session::forget('STORE_TECNICO') }}
                 @endif
             });
         </script>

@@ -8,7 +8,7 @@ class DomicilioCliente extends Model
 {
     protected $table = 'domicilio_cliente';
 
-    protected $fillable = ['direccion','lat','lng','uv','manzana','nro','ci_cliente'];
+    protected $fillable = ['id_municipio','direccion','lat','lng','uv','manzana','nro','lote','ci_cliente'];
 
     public function scopestoreDomicilioCliente($query,$request) {
         $dc = new DomicilioCliente;
@@ -23,8 +23,10 @@ class DomicilioCliente extends Model
         return $this->all()->last()->id;
     }
 
-    public function cliente() {
-        return $this->hasOne('App\Persona','ci','ci_cliente');
+    public function instalacion() {
+        return $this->hasMany('App\Instalacion','id_domicilio_cliente');
     }
-
+    public function cliente() {
+        return $this->belongsTo('App\Persona','ci_cliente');
+    }
 }

@@ -34,6 +34,13 @@ class Medidor extends Model
         return $lastId;
     }
 
+    public function scopeasignarInstalacions($query,$idMedidor,$idInstalacion) {
+        $medidor = $this::find($idMedidor);
+        $medidor->id_instalacion = $idInstalacion;
+        $medidor->update();
+        return true;
+    }
+
     public function instalacion() {
         return $this->hasOne('App\Instalacion','id','id_instalacion');
     }

@@ -4,13 +4,13 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Solicitudes de instalación</h2>
+            <h2>Lecturadores</h2>
             <ol class="breadcrumb">
                 <li>
-                    Instalación
+                    Empleados
                 </li>
                 <li class="active">
-                    <strong>Solicitudes</strong>
+                    <strong>Lecturadores</strong>
                 </li>
             </ol>
         </div>
@@ -23,7 +23,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <a href="{{ url('instalacion/crear') }}"><button class="btn btn-success"> Crear solicitud</button></a>
+                        <a href="{{ url('lecturador/crear') }}"><button class="btn btn-success"> Crear lecturador</button></a>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -36,31 +36,40 @@
                             <table data-order='[[ 0, "desc" ]]' class="table table-striped table-bordered table-hover dataTables-example" >
                                 <thead>
                                 <tr>
-                                    <th>Id</th>
+                                    <th>Ci</th>
+                                    <th>Nombre completo</th>
+                                    <th>Email</th>
+                                    <th>Teléfono fijo</th>
+                                    <th>Teléfono celular</th>
                                     <th>Fecha de Registro</th>
-                                    <th>Estado</th>
-                                    <th>Categoría</th>
                                     <th>Funciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($instalaciones as $instalacion)
-                                        <tr class="gradeX">
-                                            <td>{{ $instalacion->id }}</td>
-                                            <td> {{ $instalacion->created_at }}</td>
-                                            <td>{{ $instalacion->estadoInstalacion->estado_instalacion_descripcion }} </td>
-                                            <td>{{ $instalacion->categoriaInstalacion->categoria_instalacion_descripcion }}</td>
-                                            <td class="center">
-                                                <a href="{{ route('instalacion/mostrar',['id' => $instalacion->id]) }}"><button class="btn btn-danger">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </button></a>
-                                                <a href="{{ route('instalacion/editar',['id' => $instalacion->id]) }}">
-                                                    <button class="btn btn-default">
-                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                @foreach($lecturadores as $lecturador)
+                                    <tr class="gradeX">
+                                        <td>{{ $lecturador->ci }}</td>
+                                        <td>{{ $lecturador->nombres }} {{ $lecturador->apellido_paterno }} {{ $lecturador->apellido_materno }} </td>
+                                        <td>{{ $lecturador->email }}</td>
+                                        <td>{{ $lecturador->telefono_fijo }}</td>
+                                        <td>{{ $lecturador->telefono_celular }}</td>
+                                        <td>{{ $lecturador->created_at }}</td>
+                                        <td class="center">
+                                            <button class="btn btn-danger">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </button>
+                                            <a href="{{ route('lecturador/editar',['ci' => $lecturador->ci ]) }}">
+                                                <button class="btn btn-default">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </button>
+                                            </a>
+                                            <a href="{{ url('domicilios') }}/{{ $lecturador->ci }}">
+                                                <button class="btn btn-default">
+                                                    Ver rutas
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -115,11 +124,12 @@
         <!-- Custom and plugin javascript -->
         <script src="{{ asset('site/js/inspinia.js') }}"></script>
         <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
+
         <script>
             $(function () {
-                @if(Session::has('STORE_CLIENTE') && Session::get('STORE_CLIENTE') == '1')
-                showToast("Cliente","Registro del cliente exitoso","success");
-                {{ Session::forget('STORE_CLIENTE') }}
+                @if(Session::has('STORE_LECTURADOR') && Session::get('STORE_LECTURADOR') == '1')
+                showToast("Lecturador","Registro del lecturador exitoso","success");
+                {{ Session::forget('STORE_LECTURADOR') }}
                 @endif
             });
         </script>

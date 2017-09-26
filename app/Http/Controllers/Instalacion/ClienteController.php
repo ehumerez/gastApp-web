@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Instalacion;
 
-use App\DomicilioCliente;
 use App\Http\Requests\ClienteFormRequest;
-use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Persona;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
@@ -46,5 +43,15 @@ class ClienteController extends Controller
         } else {
             return \response()->json(['respuesta' => 'Error al registrar al cliente.']);
         }
+    }
+
+    public function editar($ci) {
+        $cliente = Persona::find($ci);
+        return view('instalacion/cliente/edit',compact('cliente'));
+    }
+
+    public function update(Request $request,$ci) {
+        Persona::actualizarCliente($request,$ci);
+        return redirect()->route('clientes');
     }
 }

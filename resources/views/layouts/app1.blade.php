@@ -29,7 +29,6 @@
         <div id="page-wrapper" class="gray-bg dashbard-2">
 
             @include('layouts.topnavbar')
-
             @yield('content')
 
             @include('layouts.footer')
@@ -42,12 +41,11 @@
 
     <!-- Mainly scripts -->
     <script src="{{ asset('site/js/jquery-3.1.1.min.js') }}"></script>
-    <script src="{{ asset('site/js/funciones.js') }}"></script>
-    @stack('scripts')
-
     <script src="{{ asset('site/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('site/js/funciones.js') }}"></script>
     <script src="{{ asset('site/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
     <script src="{{ asset('site/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8hkjGhXwGlwrhpaNH2I70jv2SojpRJa0"></script>
     <!-- Flot -->
     <script src="{{ asset('site/js/plugins/flot/jquery.flot.js') }}"></script>
     <script src="{{ asset('site/js/plugins/flot/jquery.flot.tooltip.min.js') }}"></script>
@@ -89,7 +87,7 @@
 
     <!-- Toastr -->
     <script src="{{ asset('site/js/plugins/toastr/toastr.min.js') }}"></script>
-
+    @stack('scripts')
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClienteFormRequest extends FormRequest
+class TecnicoFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -38,9 +38,6 @@ class ClienteFormRequest extends FormRequest
             'nombres.required' => "El nombre es obligatorio",
             'apellido_paterno.required' => "El apellido paterno es obligatorio",
             'apellido_materno.required' => "El apellido materno es obligatorio",
-            /*'direccion.required' => "La direccion es obligatorio",
-            'uv.required' => "La UV es obligatorio",
-            'manzana.required' => "El número de manzana es obligatorio",*/
         ];
     }
 }

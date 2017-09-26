@@ -7,13 +7,10 @@
             <h2>Medidores</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="index-2.html">Instalaciones</a>
-                </li>
-                <li>
-                    <a>Medidores</a>
+                    Instalaciones
                 </li>
                 <li class="active">
-                    <strong>Index</strong>
+                    <strong>Medidores</strong>
                 </li>
             </ol>
         </div>
@@ -27,23 +24,6 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <a href="{{ url('medidor/crear') }}"><button class="btn btn-success"> Registrar medidor</button></a>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="#">Config option 1</a>
-                                </li>
-                                <li><a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
                     </div>
                     <div class="ibox-content">
 
@@ -53,6 +33,8 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Consumo (m3)</th>
+                                    <th>Código Instalación</th>
+                                    <th>Código QR</th>
                                     <th>Funciones</th>
                                 </tr>
                                 </thead>
@@ -60,50 +42,60 @@
                                 @foreach($medidores as $medidor)
                                 <tr class="gradeX">
                                     <td>{{ $medidor->id }}</td>
-                                    <td>{{ $medidor->consumo_m3 }}
+                                    <td id="med-{{ $medidor->id }}">{{ $medidor->consumo_m3 }}</td>
+                                    <td>
+                                        @if($medidor->id_instalacion != null)
+                                            <p><span class="badge badge-success">{{ $medidor->id_instalacion }}</span></p>
+                                        @else
+                                            <p><span class="badge badge-warning">Sin instalación asignada</span></p>
+                                        @endif
                                     </td>
-
-                                    <td class="center">X</td>
+                                    @if($medidor->id_instalacion != null)
+                                        <td>
+                                            {!! QrCode::size(170)->generate(route('avisos',['id' => $medidor->id,'consumo' => $medidor->consumo_m3])) !!}
+                                            {{--<button class="btn btn-default btn-get-qr" id="btn-get-qr-id" data-toggle="modal" data-target="#modal-qr">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            </button>--}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-default btn-set-consumo" id="btn-set-consumo-id" data-toggle="modal" data-target="#modal-medidor">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                Cambiar consumo
+                                            </button>
+                                        </td>
+                                        @include('instalacion.medidor.code_qr_modal')
+                                        @include('instalacion.medidor.consumo_edit_modal')
+                                    @else
+                                        <td></td>
+                                        <td></td>
+                                    @endif
                                 </tr>
                                 @endforeach
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Consumo (m3)</th>
-                                    <th>Funciones</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            $(function () {
-                @if(Session::has('UPDATE_MEDIDOR') && Session::get('UPDATE_MEDIDOR') == '1')
-                    showToast("Medidor","Actualización exitosa","success");
-                    {{ Session::forget('UPDATE_MEDIDOR') }}
-                @endif
-            });
-        </script>
-
-        <script src="{{ asset('site/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
-        <script src="{{ asset('site/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
-
-        <script src="{{ asset('site/js/plugins/dataTables/datatables.min.js') }}"></script>
-
-        <!-- Custom and plugin javascript -->
-        <script src="{{ asset('site/js/inspinia.js') }}"></script>
-        <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
-    <!-- Page-Level Scripts -->
+@push('scripts')
     <script>
-        $(document).ready(function(){
+        $(function () {
+            @if(Session::has('UPDATE_MEDIDOR') && Session::get('UPDATE_MEDIDOR') == '1')
+                showToast("Medidor","Actualización exitosa","success");
+                {{ Session::forget('UPDATE_MEDIDOR') }}
+            @endif
+        });
+    </script>
+
+    <script src="{{ asset('site/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ asset('site/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+
+    <script src="{{ asset('site/js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
             $('.dataTables-example').DataTable({
                 "language": {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
@@ -131,10 +123,13 @@
                 ]
 
             });
-
         });
 
     </script>
-    @endpush
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ asset('site/js/inspinia.js') }}"></script>
+    <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
+@endpush
 
 @endsection

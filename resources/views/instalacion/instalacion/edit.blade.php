@@ -4,7 +4,7 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Formulario Solicitud Instalación</h2>
+            <h2>Editar Registro de Instalación {{ $data->id }}</h2>
             <ol class="breadcrumb">
                 <li>
                     Instalación
@@ -13,7 +13,7 @@
                     <a href="{{ route('instalaciones') }}">Solicitudes</a>
                 </li>
                 <li class="active">
-                    <strong>Crear</strong>
+                    <strong>Editar</strong>
                 </li>
             </ol>
         </div>
@@ -27,21 +27,24 @@
             <div class="col-md-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Datos para la instalación</h5>
+                        <h5>Datos para la edición</h5>
                     </div>
                     <div class="ibox-content">
 
                         <div>
-                            {!! Form::open(['url' => 'instalacion/store','method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-instalacion', 'id' => 'frm-data-store-instalacion']) !!}
+                            {!! Form::model($data,['url' => 'instalacion/store','method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-instalacion', 'id' => 'frm-data-store-instalacion']) !!}
 
                             <div class="form-group validate-cliente" id="div-ci">
                                 <label class="col-sm-2 control-label">Cliente *</label>
                                 <div class="col-sm-10">
-                                    <p>Clientes que tienen registrado al menos una dirección.</p>
-                                    <select name="ci_cliente" class="form-control" id="edt-ci" required>
+                                    <select name="ci_cliente" class="form-control" id="edt-ci" required disabled>
                                         <option value="sinSeleccion">Seleccione un cliente..</option>
                                         @foreach($data->clientes as $cat)
-                                            <option value="{{$cat->ci }}">CI: {{$cat->ci }}, {{ $cat->nombres }} {{ $cat->apellido_paterno }} {{ $cat->apellido_materno }}</option>
+                                            @if($cat->ci == $data->ci)
+                                                <option value="{{$cat->ci }}" selected>CI: {{$cat->ci }}, {{ $cat->nombres }} {{ $cat->apellido_paterno }} {{ $cat->apellido_materno }}</option>
+                                            @else
+                                                <option value="{{$cat->ci }}">CI: {{$cat->ci }}, {{ $cat->nombres }} {{ $cat->apellido_paterno }} {{ $cat->apellido_materno }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                     <p id="err-edt-ci" class="help-block err-div"></p>
@@ -53,8 +56,8 @@
                             <div class="form-group validate-cliente" id="div-ci">
                                 <label class="col-sm-2 control-label">Domicilios del cliente *</label>
                                 <div class="col-sm-10">
-                                    <select name="id_domicilio_cliente" class="form-control" id="id_domicilio_cliente" required>
-                                        <option value="">Para ver los domicilios seleccione un cliente.</option>
+                                    <select name="id_domicilio_cliente" class="form-control" id="id_domicilio_cliente" disabled>
+                                        <option value="">ID: {{ $data->id_domicilio_cliente }} - {{ $data->direccion }} NRO: {{ $data->nro }}</option>
                                     </select>
                                 </div>
                                 <p id="err-edt-ci" class="help-block err-div"></p>
@@ -66,7 +69,7 @@
                                 <div class="col-sm-10">
                                     {{--<input type="text" name="cliente_codigo" class="form-control">--}}
                                     <p>Medidores que aún no tienen asignado una instalación.</p>
-                                    {!! Form::select('id_medidor', $data->medidores, null, ['class' => 'form-control', 'id' => 'edt-ciudad','required']) !!}
+                                    {!! Form::select('id_medidor', $data->medidores, $data->id_medidor, ['class' => 'form-control', 'id' => 'edt-ciudad','required']) !!}
                                     <p id="err-edt-id_medidor" class="help-block err-div"></p>
                                 </div>
                             </div>
@@ -76,7 +79,7 @@
                                 <label class="col-sm-2 control-label">Categoría de Instalación </label>
                                 <div class="col-sm-10">
                                     {{--<input type="text" name="cliente_codigo" class="form-control">--}}
-                                    {!! Form::select('id_categoria_instalacion', $data->categorias, null, ['class' => 'form-control', 'id' => 'edt-ciudad','required']) !!}
+                                    {!! Form::select('id_categoria_instalacion', $data->categorias, $data->categoria_instalacion_descripcion, ['class' => 'form-control', 'id' => 'edt-ciudad','required']) !!}
                                     <p id="err-edt-id_medidor" class="help-block err-div"></p>
                                 </div>
                             </div>
@@ -97,7 +100,7 @@
                                     <p>Si los hubiera previa inspección técnica.</p>
                                     <div class="input-group m-b">
                                         <span class="input-group-addon"></span>
-                                        <input type="number" name="mts_excedente" min="0" class="form-control" value="0">
+                                        <input type="number" name="mts_excedente" min="0" class="form-control" value="{{ $data->mts_excedente }}">
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +111,7 @@
                                 <div class="col-sm-10">
                                     <div class="input-group m-b">
                                         <span class="input-group-addon"><i class="fa fa-wrench" aria-hidden="true"></i></span>
-                                        <input type="text" name="observaciones" class="form-control">
+                                        <input type="text" name="observaciones" class="form-control" value="{{ $data->observaciones }}">
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +158,8 @@
         <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
         <script>
             $(document).ready(function () {
-                $('.summernote').summernote();
+                var a = "{{ $data->instalacion_detalle }}";
+                $('.summernote').summernote('code',a);
             });
 
             $('#edt-ci').change(function (e) {
