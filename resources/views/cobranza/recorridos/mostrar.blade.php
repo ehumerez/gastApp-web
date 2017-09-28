@@ -4,7 +4,7 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Crear Recorrido</h2>
+            <h2>Recorrido # {{ $recorrido->id }} - Lecturador {{ $lecturador->nombres }} {{ $lecturador->apellido_paterno }} {{ $lecturador->apellido_materno }}</h2>
             <ol class="breadcrumb">
                 <li>
                     Cobranza
@@ -13,7 +13,7 @@
                     <a href="{{ url('recorridos') }}">Recorridos</a>
                 </li>
                 <li class="active">
-                    <strong>Crear</strong>
+                    <strong>Mostrar</strong>
                 </li>
             </ol>
         </div>
@@ -34,61 +34,60 @@
                             </a>
                         </div>
                     </div>
-                    @if(count($errors)>0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach($errors->all() as $error)
-                                    <li>{{$error}}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                     <div class="ibox-content">
-
                         <div>
-                            {!! Form::open(['route' => 'recorrido/store','method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-recorridos', 'id' => 'frm-data-store-recorridos']) !!}
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group validate-cliente" id="div-recorrido_descripcion">
-                                <label class="col-sm-2 control-label">Descripción:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="recorrido_descripcion" class="form-control" required>
-                                </div>
-                                <p id="err-edt-recorrido_descripcion" class="help-block err-div"></p>
-                            </div>
-
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group validate-cliente" id="div-tiempo_estimado">
-                                <label class="col-sm-2 control-label">Tiempo estimado para recorrer (min):</label>
-                                <div class="col-sm-10">
-                                    <input type="number" name="tiempo_estimado" class="form-control" required>
-                                </div>
-                                <p id="err-edt-tiempo_estimado" class="help-block err-div"></p>
-                            </div>
-
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group validate-cliente" id="div-fecha">
-                                <label class="col-sm-2 control-label">Fecha a realizar el recorrido:</label>
-                                <div class="col-sm-10">
-                                    <input type="date" name="fecha" class="form-control" required>
-                                </div>
-                                <p id="err-edt-fecha" class="help-block err-div"></p>
-                            </div>
-
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <h3>Visualización de todos los domicilio:</h3>
+                            {{--{!! Form::open(['route' => 'recorrido/store','method'=>'POST','class' => 'form-horizontal', 'name' => 'frm-data-store-recorridos', 'id' => 'frm-data-store-recorridos']) !!}--}}
+                            <div class="row">
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group validate-cliente" id="div-recorrido_descripcion">
+                                    <label class="col-sm-2 control-label">Descripción:</label>
+                                    <div class="col-sm-10">
+                                        <p>{{ $recorrido->recorrido_descripcion }}</p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <div class="google-map" id="map1"></div>
+                            <div class="row">
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group validate-cliente" id="div-tiempo_estimado">
+                                    <label class="col-sm-2 control-label">Tiempo estimado para recorrer (min):</label>
+                                    <div class="col-sm-10">
+                                        <p>{{ $recorrido->tiempo_estimado }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <div id="domicilios"></div>
+
+                            <div class="row">
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group validate-cliente" id="div-fecha">
+                                    <label class="col-sm-2 control-label">Fecha a realizar el recorrido:</label>
+                                    <div class="col-sm-10">
+                                        <p>{{ $recorrido->fecha }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <h3>Visualización de todos los domicilio:</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <div class="google-map" id="map1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <div id="domicilios"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -109,21 +108,23 @@
                                 </table>
                             </div>
 
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group" id="guardar">
-                                <div class="col-sm-2 col-md-2"></div>
-                                <div class="col-sm-2 col-md-2"></div>
-                                <div class="col-sm-2 col-md-2"></div>
-                                <div class="col-sm-2 col-md-2"></div>
-                                <div class="col-sm-2 col-md-2">
-                                    <a href="" type="reset" class="btn btn-default">Cancelar</a>
-                                </div>
-                                <div class="col-sm-2 col-md-2">
-                                    <button class="btn btn-primary" type="submit"  id="btn-crear-recorrido">Guardar cambios</button>
+                            <div class="row">
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group" id="guardar">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <a href="" type="reset" class="btn btn-default">Cancelar</a>
+                                    </div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <button class="btn btn-primary" type="submit"  id="btn-crear-recorrido">Guardar cambios</button>
+                                    </div>
                                 </div>
                             </div>
 
-                            {!! Form::close() !!}
+                            {{--{!! Form::close() !!}--}}
 
                         </div>
 
@@ -198,28 +199,28 @@
 
                 // Create the Google Map using elements
                 var map1 = new google.maps.Map(mapElement1, mapOptions1);
-                var c = '{{ count($instalaciones)  }}';
+                var c = '{{ count($recorrido->instalacion)  }}';
                 var p = '';
-                @foreach($instalaciones as $instalacion)
-                    var lt = '{{ $instalacion->domicilioCliente->lat }}';
-                    var lg = '{{ $instalacion->domicilioCliente->lng }}';
-                    lt = parseFloat(lt)
-                    lg = parseFloat(lg)
-                    var latL = {
-                        lat: lt,
-                        lng: lg
-                    }
+                        @foreach($recorrido->instalacion as $instalacion)
+                var lt = '{{ $instalacion->domicilioCliente->lat }}';
+                var lg = '{{ $instalacion->domicilioCliente->lng }}';
+                lt = parseFloat(lt)
+                lg = parseFloat(lg)
+                var latL = {
+                    lat: lt,
+                    lng: lg
+                }
                 var ubi = new google.maps.LatLng(latL);
                 var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-                    var t = '{{ $instalacion->domicilioCliente->direccion }}';
-                    var marker = new google.maps.Marker({
-                        position:ubi,
-                        title: '{{ $instalacion->id }}',
-                        label: t,
-                        @if($instalacion->id_recorrido != null)
-                        icon:image
-                        @endif
-                    });
+                var t = '{{ $instalacion->domicilioCliente->direccion }}';
+                var marker = new google.maps.Marker({
+                    position:ubi,
+                    title: '{{ $instalacion->id }}',
+                    label: t,
+                    @if($instalacion->id_recorrido != null)
+                    icon:image
+                    @endif
+                });
                 marker.setMap(map1);
                 var conte = '{{ $instalacion->domicilioCliente->id }} - UV: {{ $instalacion->domicilioCliente->uv }} MANZANA: {{ $instalacion->domicilioCliente->manzana }}';
                 var infowindow = new google.maps.InfoWindow({
@@ -246,10 +247,10 @@
                 });
 
                 @endforeach
-//                // This event listener calls addMarker() when the map is clicked.
-//                google.maps.event.addListener(map1, 'click', function(event) {
-//                    addMarker(event.latLng, map1);
-//                });
+                //                // This event listener calls addMarker() when the map is clicked.
+                //                google.maps.event.addListener(map1, 'click', function(event) {
+                //                    addMarker(event.latLng, map1);
+                //                });
             }
 
             function evaluar(){

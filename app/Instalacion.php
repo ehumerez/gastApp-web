@@ -35,6 +35,10 @@ class Instalacion extends Model
         return $this->belongsTo('App\Recorrido','id_recorrido');
     }
 
+    public function pago() {
+        return $this->hasOne('App\Pago','id_instalacion','id');
+    }
+
     public function scopegetAvisoCobranza($query,$id) {
         $data = DB::table('medidor as m')
             ->join('instalacion as i','i.id','=','m.id_instalacion')

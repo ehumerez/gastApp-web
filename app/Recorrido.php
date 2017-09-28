@@ -21,7 +21,7 @@ class Recorrido extends Model
     }
 
     public function instalacion() {
-        return $this->hasMany('App\Recorrido','id_recorrido','id');
+        return $this->hasMany('App\Instalacion','id_recorrido','id');
     }
 
 }

@@ -17,12 +17,13 @@ class DomicilioClienteController extends Controller
         //dd(DomicilioCliente::where('ci_cliente',$idCliente)->get());
         //dd(DomicilioCliente::all());
         //$domicilios = count(DomicilioCliente::where('ci_cliente',$idCliente)->get()) == 0?null:DomicilioCliente::where('ci_cliente',$idCliente)->get();
-        $domicilios = DB::table('persona as c')
+        $domicilio = DB::table('persona as c')
             ->join('domicilio_cliente as dc','dc.ci_cliente','=','c.ci')
             ->where('c.TC',1)
             ->where('dc.ci_cliente',$idCliente)
             ->get();
         //dd($domicilios);
+        $domicilios = DomicilioCliente::all()->where('ci_cliente',$idCliente);
         return view('instalacion/domicilios/index',['domicilios' => $domicilios, 'cliente' => Persona::find($idCliente)]);
     }
 

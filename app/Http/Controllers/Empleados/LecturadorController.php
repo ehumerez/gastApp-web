@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Empleados;
 
 use App\Http\Requests\LecturadorFormRequest;
+use App\Recorrido;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Persona;
@@ -51,5 +52,16 @@ class LecturadorController extends Controller
     public function update(Request $request,$ci) {
         Persona::actualizarLecturador($request,$ci);
         return redirect()->route('lecturadores');
+    }
+
+    public function eliminar($ci) {
+        $lecturador = Persona::find($ci);
+        $lecturador->activo = 0;
+        $lecturador->update();
+        return redirect()->route('lecturadores');
+    }
+
+    public function recorridos($ci) {
+        return view('empleados/lecturador/index_recorridos',['lecturador' => Persona::find($ci)]);
     }
 }

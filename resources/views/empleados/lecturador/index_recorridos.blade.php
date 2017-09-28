@@ -4,13 +4,16 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Solicitudes de instalación</h2>
+            <h2>Recorridos asignados del lecturador {{ $lecturador->nombres }} {{ $lecturador->apellido_paterno }} {{ $lecturador->apellido_materno }}</h2>
             <ol class="breadcrumb">
                 <li>
-                    Instalación
+                    Empleados
+                </li>
+                <li>
+                    <a href="{{ route('lecturadores') }}">Lecturadores</a>
                 </li>
                 <li class="active">
-                    <strong>Solicitudes</strong>
+                    <strong>Recorridos</strong>
                 </li>
             </ol>
         </div>
@@ -23,7 +26,6 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <a href="{{ url('instalacion/crear') }}"><button class="btn btn-success"> Crear solicitud</button></a>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -38,29 +40,26 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Fecha de Registro</th>
-                                    <th>Estado de instalación</th>
-                                    <th>Categoría de instalación</th>
+                                    <th>Descripción</th>
+                                    <th>Tiempo estimado</th>
+                                    <th>Fecha a realizar recorrido</th>
                                     <th>Funciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($instalaciones as $instalacion)
-                                        <tr class="gradeX">
-                                            <td>{{ $instalacion->id }}</td>
-                                            <td> {{ $instalacion->created_at }}</td>
-                                            <td><span class="badge badge-{{ $instalacion->estadoInstalacion->icono  }}">{{ $instalacion->estadoInstalacion->estado_instalacion_descripcion }}</span> </td>
-                                            <td> {{ $instalacion->categoriaInstalacion->categoria_instalacion_descripcion }}</td>
-                                            <td class="center">
-                                                <a href="{{ route('instalacion/mostrar',['id' => $instalacion->id]) }}"><button class="btn btn-danger">
+                                @foreach($lecturador->recorrido as $recorrido)
+                                    <tr class="gradeX">
+                                        <td>{{ $recorrido->id }}</td>
+                                        <td> {{ $recorrido->created_at }}</td>
+                                        <td>{{ $recorrido->recorrido_descripcion }}</td>
+                                        <td>{{ $recorrido->tiempo_estimado }}</td>
+                                        <td>{{ $recorrido->fecha }}</td>
+                                        <td class="center">
+                                            <a href="{{ route('recorrido/mostrar',['ci' => $lecturador->ci,'id' => $recorrido->id]) }}"><button class="btn btn-warning">
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </button></a>
-                                                <a href="{{ route('instalacion/editar',['id' => $instalacion->id]) }}">
-                                                    <button class="btn btn-default">
-                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        </td>
+                                    </tr>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -90,6 +89,7 @@
                     ordering: true,
                     dom: '<"html5buttons"B>lTfgitp',
                     buttons: [
+                        { extend: 'copy'},
                         {extend: 'csv'},
                         {extend: 'excel', title: 'ExampleFile'},
                         {extend: 'pdf', title: 'ExampleFile'},
@@ -98,11 +98,11 @@
                             customize: function (win){
                                 $(win.document.body).addClass('white-bg');
                                 $(win.document.body).css('font-size', '10px');
+
                                 $(win.document.body).find('table')
                                     .addClass('compact')
                                     .css('font-size', 'inherit');
-                            },
-                            title:'Reportes de Instalaciones'
+                            }
                         }
                     ]
 
@@ -116,9 +116,9 @@
         <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
         <script>
             $(function () {
-                @if(Session::has('STORE_CLIENTE') && Session::get('STORE_CLIENTE') == '1')
-                showToast("Cliente","Registro del cliente exitoso","success");
-                {{ Session::forget('STORE_CLIENTE') }}
+                @if(Session::has('STORE_RECORRIDO') && Session::get('STORE_RECORRIDO') == '1')
+                showToast("Recorrido","Registro del recorrido exitoso","success");
+                {{ Session::forget('STORE_RECORRIDO') }}
                 @endif
             });
         </script>

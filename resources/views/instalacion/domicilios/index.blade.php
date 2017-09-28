@@ -57,6 +57,7 @@
                                     <th>Manzana</th>
                                     <th>Lote</th>
                                     <th>Nro</th>
+                                    {{--<th>Instalación</th>--}}
                                     <th>Funciones</th>
                                 </tr>
                                 </thead>
@@ -71,6 +72,7 @@
                                         <td>{{ $direccion->manzana }}</td>
                                         <td>{{ $direccion->lote }}</td>
                                         <td>{{ $direccion->nro }}</td>
+                                        {{--<td>{{ $direccion->instalacion->id }}</td>--}}
                                         <td class="center">
                                             <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>

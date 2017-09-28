@@ -49,4 +49,12 @@ class RecorridoController extends Controller
         $recorrido->update();
         return redirect()->route('recorridos');
     }
+
+    public function showRecorrido($ciLecturador,$idRecorrido) {
+        //dd(['ciLecturador'=>$ciLecturador, 'idRecorrido'=> $idRecorrido]);
+        $lecturador = Persona::find($ciLecturador);
+        $recorrido = Recorrido::find($idRecorrido);
+        //dd($recorrido->instalacion);
+        return view('cobranza/recorridos/mostrar',['lecturador' => $lecturador, 'recorrido' => $recorrido]);
+    }
 }

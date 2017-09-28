@@ -63,6 +63,10 @@ class Persona extends Model
         return $this->hasMany('App\Recorrido','ci_lecturador','ci');
     }
 
+    public function pago() {
+        return $this->hasMany('App\Pago','id_pago','id');
+    }
+
     // Métodos del lecturador
     public function scopestoreLecturador($query,$request) {
         $cliente = new Persona;
@@ -101,7 +105,7 @@ class Persona extends Model
     }
 
     public function scopegetLecturadores() {
-        return $this->where('TL',1)->get();
+        return $this->where('TL',1)->where('activo',1)->get();
     }
 
     // Métodos del técnico

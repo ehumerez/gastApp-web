@@ -41,7 +41,7 @@
                                     <th>Descripción</th>
                                     <th>Tiempo estimado</th>
                                     <th>Lecturador asignado</th>
-                                    <th>Fecha</th>
+                                    <th>Fecha a realizar recorrido</th>
                                     <th>Funciones</th>
                                 </tr>
                                 </thead>
@@ -55,11 +55,11 @@
                                         @if($recorrido->ci_lecturador != null)
                                             <td>CI: {{ $recorrido->lecturador->ci }} - {{ $recorrido->lecturador->nombres }} {{ $recorrido->lecturador->apellido_paterno }} {{ $recorrido->lecturador->apellido_materno }}</td>
                                         @else
-                                            <td>Recorrido sin asignar </td>
+                                            <td><small class="label label-info">Recorrido sin asignar</small> </td>
                                         @endif
                                             <td>{{ $recorrido->fecha }}</td>
                                             <td class="center">
-                                                <a href=""><button class="btn btn-warning">
+                                                <a href="{{ route('recorrido/mostrar',['ci' => $recorrido->ci_lecturador,'id' => $recorrido->id]) }}"><button class="btn btn-warning">
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </button></a>
                                                 <a href="">

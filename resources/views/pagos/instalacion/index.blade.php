@@ -4,13 +4,13 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Lecturadores</h2>
+            <h2>Pagos por el servicio de Instalación</h2>
             <ol class="breadcrumb">
                 <li>
-                    Empleados
+                    Pagos
                 </li>
                 <li class="active">
-                    <strong>Lecturadores</strong>
+                    <strong>Servicio de Instalación</strong>
                 </li>
             </ol>
         </div>
@@ -23,12 +23,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <a href="{{ url('lecturador/crear') }}"><button class="btn btn-success"> Crear lecturador</button></a>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
+                        <a href="{{ url('medidor/crear') }}"><button class="btn btn-success"> Registrar pago</button></a>
                     </div>
                     <div class="ibox-content">
 
@@ -36,43 +31,46 @@
                             <table data-order='[[ 0, "desc" ]]' class="table table-striped table-bordered table-hover dataTables-example" >
                                 <thead>
                                 <tr>
-                                    <th>Ci</th>
-                                    <th>Nombre completo</th>
-                                    <th>Email</th>
-                                    <th>Teléfono fijo</th>
-                                    <th>Teléfono celular</th>
-                                    <th>Fecha de Registro</th>
+                                    <th>Id</th>
+                                    <th>Fecha</th>
+                                    <th>Id Instalación</th>
+                                    <th>Cliente</th>
+                                    <th>Estado de Pago</th>
                                     <th>Funciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($lecturadores as $lecturador)
+                                @foreach($pagos as $pago)
                                     <tr class="gradeX">
-                                        <td>{{ $lecturador->ci }}</td>
-                                        <td>{{ $lecturador->nombres }} {{ $lecturador->apellido_paterno }} {{ $lecturador->apellido_materno }} </td>
-                                        <td>{{ $lecturador->email }}</td>
-                                        <td>{{ $lecturador->telefono_fijo }}</td>
-                                        <td>{{ $lecturador->telefono_celular }}</td>
-                                        <td>{{ $lecturador->created_at }}</td>
-                                        <td class="center">
-                                            <a href="" data-toggle="modal" data-target="#eliminar-lecturador-{{ $lecturador->ci }}">
-                                                <button class="btn btn-danger">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                </button>
-                                            </a>
-                                            <a href="{{ route('lecturador/editar',['ci' => $lecturador->ci ]) }}">
-                                                <button class="btn btn-default">
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                </button>
-                                            </a>
-                                            <a href="{{ route('lecturador/recorridos',['ci' => $lecturador->ci])  }}">
-                                                <button class="btn btn-warning" type="button">
-                                                    Ver recorridos
-                                                </button>
-                                            </a>
+                                        <td>{{ $medidor->id }}</td>
+                                        <td id="med-{{ $medidor->id }}">{{ $medidor->consumo_m3 }}</td>
+                                        <td>
+                                            @if($medidor->id_instalacion != null)
+                                                <p><span class="badge badge-success">{{ $medidor->id_instalacion }}</span></p>
+                                            @else
+                                                <p><span class="badge badge-warning">Sin instalación asignada</span></p>
+                                            @endif
                                         </td>
+                                        @if($medidor->id_instalacion != null)
+                                            <td>
+                                                {!! QrCode::size(170)->generate(route('avisos',['id' => $medidor->id,'consumo' => $medidor->consumo_m3])) !!}
+                                                {{--<button class="btn btn-default btn-get-qr" id="btn-get-qr-id" data-toggle="modal" data-target="#modal-qr">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </button>--}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-default btn-set-consumo" id="btn-set-consumo-id" data-toggle="modal" data-target="#modal-medidor">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                    Cambiar consumo
+                                                </button>
+                                            </td>
+                                            @include('instalacion.medidor.code_qr_modal')
+                                            @include('instalacion.medidor.consumo_edit_modal')
+                                        @else
+                                            <td></td>
+                                            <td></td>
+                                        @endif
                                     </tr>
-                                    @include('empleados.lecturador.eliminar_modal')
                                 @endforeach
                                 </tbody>
                             </table>
@@ -84,7 +82,14 @@
     </div>
 
     @push('scripts')
-
+        <script>
+            $(function () {
+                @if(Session::has('UPDATE_MEDIDOR') && Session::get('UPDATE_MEDIDOR') == '1')
+                showToast("Medidor","Actualización exitosa","success");
+                {{ Session::forget('UPDATE_MEDIDOR') }}
+                @endif
+            });
+        </script>
 
         <script src="{{ asset('site/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
         <script src="{{ asset('site/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
@@ -126,15 +131,6 @@
         <!-- Custom and plugin javascript -->
         <script src="{{ asset('site/js/inspinia.js') }}"></script>
         <script src="{{ asset('site/js/plugins/pace/pace.min.js') }}"></script>
-
-        <script>
-            $(function () {
-                @if(Session::has('STORE_LECTURADOR') && Session::get('STORE_LECTURADOR') == '1')
-                showToast("Lecturador","Registro del lecturador exitoso","success");
-                {{ Session::forget('STORE_LECTURADOR') }}
-                @endif
-            });
-        </script>
     @endpush
 
 @endsection

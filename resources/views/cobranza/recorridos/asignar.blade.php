@@ -52,7 +52,7 @@
                                 {{--<label class="col-sm-2 control-label">Descripción:</label>--}}
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-6">
-                                    <p>Seleccione un lecturador</p>
+                                    <p>Lecturadores disponibles para la fecha: {{ $recorrido->fecha }}</p>
                                     <select name="ci_lecturador" class="form-control" required>
                                         @foreach($lecturadores as $lecturador)
                                             <option value="{{ $lecturador->ci }}">{{ $lecturador->ci }} {{ $lecturador->nombres }} {{ $lecturador->apellido_paterno }} {{ $lecturador->apellido_materno }}</option>

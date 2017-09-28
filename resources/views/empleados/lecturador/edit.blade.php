@@ -24,30 +24,7 @@
     <div class="wrapper wrapper-content animated fadeInRight">
 
         <div class="row">
-            <div class="col-md-4">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Foto</h5>
-                    </div>
-                    <div>
-
-                        <div class="ibox-content no-padding border-left-right">
-
-                            <img id="pf_foto"  class="img-responsive" style="height: 350px; width: 300px;" >
-                            <input type='file' name='img_avatar' id='verborgen_file' />
-
-                        </div>
-                        <div class="ibox-content profile-content">
-                            <h5>
-                                Observaciones
-                            </h5>
-                            <p>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Datos personales</h5>
@@ -136,10 +113,18 @@
 
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
-                                <div class="col-sm-3 col-md-3">
-                                    <a href="{{route('lecturadores')}}" class="btn btn-default">Cancelar</a>
+                                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2"></div>
+                                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2"></div>
+                                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2"></div>
+                                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2"></div>
+                                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+                                    <a href="{{route('lecturadores')}}">
+                                        <button class="btn btn-primary" type="button">
+                                            Cancelar
+                                        </button>
+                                    </a>
                                 </div>
-                                <div class="col-sm-3 col-md-3">
+                                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
                                     <button class="btn btn-primary" type="submit" >Guardar cambios</button>
                                 </div>
                             </div>

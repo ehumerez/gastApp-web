@@ -63,6 +63,8 @@ Route::namespace('Empleados')->group(function () {
     Route::post('lecturador/store', 'LecturadorController@storeLecturador')->name('lecturador/store');
     Route::get('lecturador/editar/{ci}', 'LecturadorController@editar')->name('lecturador/editar');
     Route::post('lecturador/update/{ci}', 'LecturadorController@update')->name('lecturador/update');
+    Route::get('lecturador/eliminar/{ci}', 'LecturadorController@eliminar')->name('lecturador/eliminar');
+    Route::get('lecturador/recorridos/{ci}', 'LecturadorController@recorridos')->name('lecturador/recorridos');
 
     // TÉCNICO
     Route::get('tecnico/index', 'TecnicoController@index')->name('tecnico/index');
@@ -81,6 +83,7 @@ Route::namespace('Cobranza')->group(function () {
     Route::post('recorrido/store', 'RecorridoController@store')->name('recorrido/store');
     Route::get('recorrido/asignar-lecturador/{id}', 'RecorridoController@asignarLecturador')->name('recorrido/asignar-lecturador');
     Route::post('recorrido/store-asignacion/{id}', 'RecorridoController@crearAsignacionLecturador')->name('recorrido/store-asignacion');
+    Route::get('recorrido/mostrar/{ic}/{id}', 'RecorridoController@showRecorrido')->name('recorrido/mostrar');
 });
 
 
